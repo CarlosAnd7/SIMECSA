@@ -1,118 +1,48 @@
 <?php
-
-// Clase Venta
-class Venta
-{
+class Venta {
     private $idVenta;
     private $total;
     private $fecha;
-    private $usuarioCorreo;
-
-    public function __construct($idVenta, $total, $fecha, $usuarioCorreo)
-    {
+    private $Usuariocorreo;
+    private $estado;
+    private $direccion;
+    private $pago;
+    
+    public function __construct($idVenta, $total, $fecha, $Usuariocorreo, $estado, $direccion, $pago) {
         $this->idVenta = $idVenta;
         $this->total = $total;
         $this->fecha = $fecha;
-        $this->usuarioCorreo = $usuarioCorreo;
+        $this->Usuariocorreo = $Usuariocorreo;
+        $this->estado = $estado;
+        $this->direccion = $direccion;
+        $this->pago = $pago;
     }
 
-
-
-    /**
-     * Get the value of idVenta
-     */
-    public function getIdVenta()
-    {
+    public function getIdVenta() {
         return $this->idVenta;
     }
 
-    /**
-     * Set the value of idVenta
-     */
-    public function setIdVenta($idVenta): self
-    {
-        $this->idVenta = $idVenta;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of total
-     */
-    public function getTotal()
-    {
+    public function getTotal() {
         return $this->total;
     }
 
-    /**
-     * Set the value of total
-     */
-    public function setTotal($total): self
-    {
-        $this->total = $total;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of fecha
-     */
-    public function getFecha()
-    {
+    public function getFecha() {
         return $this->fecha;
     }
 
-    /**
-     * Set the value of fecha
-     */
-    public function setFecha($fecha): self
-    {
-        $this->fecha = $fecha;
-
-        return $this;
+    public function getUsuariocorreo() {
+        return $this->Usuariocorreo;
     }
 
-    /**
-     * Get the value of usuarioCorreo
-     */
-    public function getUsuarioCorreo()
-    {
-        return $this->usuarioCorreo;
+    public function getEstado() {
+        return $this->estado;
     }
 
-    /**
-     * Set the value of usuarioCorreo
-     */
-    public function setUsuarioCorreo($usuarioCorreo): self
-    {
-        $this->usuarioCorreo = $usuarioCorreo;
-
-        return $this;
+    public function getDireccion() {
+        return $this->direccion;
     }
 
-    function insertarVenta(Venta $venta)
-    {
-        $bd = obtenerConexion();
-        $sentencia = $bd->prepare("INSERT INTO venta(idVenta, total, fecha, usuarioCorreo, estado) VALUES(?, ?, ?, ?, ?)");
-        return $sentencia->execute([$venta->getIdVenta(), $venta->getTotal(), $venta->getFecha(), $venta->getUsuarioCorreo(), "Por confirmar"]);
-    }
-
-    function obtenerVentaPorId($id)
-    {
-        $bd = obtenerConexion();
-        $sentencia = $bd->prepare("SELECT *  FROM venta WHERE idVenta = ?");
-        $sentencia->execute([$id]);
-        $ventaData = $sentencia->fetch();
-        if ($ventaData) {
-            return new Venta($ventaData['idVenta'], $ventaData['total'], $ventaData['fecha'], $ventaData['usuarioCorreo']);
-        }
-        return null;
-    }
-
-    function insertarVentaIndividuales(Venta $venta, $idProducto, $precioIndividual, $cantidad, $total)
-    {
-        $bd = obtenerConexion();
-        $sentencia = $bd->prepare("INSERT INTO producto_venta(VentaidVenta, ProductoidProducto, precioIndividual, cantidad, total) VALUES(?, ?, ?, ?, ?)");
-        return $sentencia->execute([$venta->getIdVenta(), $idProducto, $precioIndividual, $cantidad, $total]);
+    public function getPago() {
+        return $this->pago;
     }
 }
