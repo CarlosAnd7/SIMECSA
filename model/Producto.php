@@ -1,25 +1,60 @@
 <?php
-// Clase Producto
 class Producto {
     private $idProducto;
     private $nombre;
     private $descripcion;
-    private $cantidad;
+    private $stock;
     private $precio;
-    private $costo;
+    private $coste;
     private $imagen;
-    private $categoriaNombre;
-
-    public function __construct($idProducto, $nombre, $descripcion, $cantidad, $precio, $costo, $imagen, $categoriaNombre) {
+    private $Categorianombre;
+    private $disponibilidad;
+    
+    public function __construct($idProducto, $nombre, $descripcion, $stock, $precio, $coste, $imagen, $Categorianombre, $disponibilidad) {
         $this->idProducto = $idProducto;
         $this->nombre = $nombre;
         $this->descripcion = $descripcion;
-        $this->cantidad = $cantidad;
+        $this->stock = $stock;
         $this->precio = $precio;
-        $this->costo = $costo;
+        $this->coste = $coste;
         $this->imagen = $imagen;
-        $this->categoriaNombre = $categoriaNombre;
+        $this->Categorianombre = $Categorianombre;
+        $this->disponibilidad = $disponibilidad;
     }
 
-    // Métodos getters y setters
+    public function getIdProducto() {
+        return $this->idProducto;
+    }
+
+    public function getNombre() {
+        return $this->nombre;
+    }
+
+    public function getDescripcion() {
+        return $this->descripcion;
+    }
+
+    public function getStock() {
+        return $this->stock;
+    }
+
+    public function getPrecio() {
+        return $this->precio;
+    }
+
+    public function getCoste() {
+        return $this->coste;
+    }
+
+    public function getImagen() {
+        return $this->imagen;
+    }
+
+    public function getCategorianombre() {
+        return $this->Categorianombre;
+    }
+
+    public function getDisponibilidad() {
+        return $this->disponibilidad;
+    }
 }
