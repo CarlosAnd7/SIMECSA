@@ -2,8 +2,8 @@
 class CarritoUsuariosDAO {
     private $bd;
 
-    public function __construct($bd) {
-        $this->bd = $bd;
+    public function __construct() {
+        $this->bd = ConexionBD::obtenerInstancia()->obtenerConexion();
     }
 
     public function obtenerProductosEnCarrito() {

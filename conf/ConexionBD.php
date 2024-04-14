@@ -1,7 +1,7 @@
 <?php
+
 // Singleton para conexión a la base de datos
-// Singleton para conexión a la base de datos
-class ConexionDB extends PDO {
+class ConexionBD extends PDO {
     private static $instancia;
 
     private function __construct() {
@@ -19,6 +19,11 @@ class ConexionDB extends PDO {
         if (!isset(self::$instancia)) {
             self::$instancia = new self();
         }
+        return self::$instancia;
+    }
+
+    // Este método devuelve la instancia de la conexión
+    public function obtenerConexion() {
         return self::$instancia;
     }
 }
