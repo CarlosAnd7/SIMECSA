@@ -1,37 +1,44 @@
 <?php
 
-class UsuarioDAO {
+class UsuarioDAO
+{
     private $bd;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->bd = ConexionBD::obtenerInstancia()->obtenerConexion();
     }
 
-    public function usuarioExiste($correo) {
+    public function usuarioExiste($correo)
+    {
         $sentencia = $this->bd->prepare("SELECT correo FROM usuario WHERE correo = ? LIMIT 1");
         $sentencia->execute([$correo]);
         return $sentencia->rowCount() > 0;
     }
 
-    public function obtenerUsuarioPorCorreo($correo) {
+    public function obtenerUsuarioPorCorreo($correo)
+    {
         $sentencia = $this->bd->prepare("SELECT correo, pass FROM usuario WHERE correo = ? LIMIT 1");
         $sentencia->execute([$correo]);
         return $sentencia->fetchObject();
     }
 
-    public function registrarUsuarioPersonal($correo, $password, $nombre, $apellidoP, $apellidoM, $telefono, $tipoUsuario) {
+    public function registrarUsuarioPersonal($correo, $password, $nombre, $apellidoP, $apellidoM, $telefono, $tipoUsuario)
+    {
         $password = $this->hashearpassword($password);
         $sentencia = $this->bd->prepare("INSERT INTO usuario(correo, pass, nombre, apellidoP, apellidoM, telefono, tipoUsuario) VALUES (?, ?, ?, ?, ?, ?, ?)");
         return $sentencia->execute([$correo, $password, $nombre, $apellidoP, $apellidoM, $telefono, $tipoUsuario]);
     }
 
-    public function registrarUsuarioEmpresarial($correo, $password, $nombre, $telefono, $tipoUsuario) {
+    public function registrarUsuarioEmpresarial($correo, $password, $nombre, $telefono, $tipoUsuario)
+    {
         $password = $this->hashearpassword($password);
         $sentencia = $this->bd->prepare("INSERT INTO usuario(correo, pass, nombre, telefono, tipoUsuario) VALUES (?, ?, ?, ?, ?)");
         return $sentencia->execute([$correo, $password, $nombre, $telefono, $tipoUsuario]);
     }
 
-    public function actualizarPassword($correo, $passActual, $passNueva) {
+    public function actualizarPassword($correo, $passActual, $passNueva)
+    {
         $passNuevaHashed = $this->hashearpassword($passNueva);
         $posibleUsuarioRegistrado = $this->obtenerUsuarioPorCorreo($correo);
         $passwordBD = $posibleUsuarioRegistrado->pass;
@@ -44,7 +51,8 @@ class UsuarioDAO {
         }
     }
 
-    public function login($correo, $password) {
+    public function login($correo, $password)
+    {
         $posibleUsuarioRegistrado = $this->obtenerUsuarioPorCorreo($correo);
         if ($posibleUsuarioRegistrado === false) {
             return false;
@@ -58,17 +66,19 @@ class UsuarioDAO {
         return true;
     }
 
-    private function iniciarSesion($usuario) {
+    private function iniciarSesion($usuario)
+    {
         session_start();
         $_SESSION["correo"] = $usuario->correo;
     }
 
-    private function coincidenPalabrasSecretas($password, $passwordBD) {
+    private function coincidenPalabrasSecretas($password, $passwordBD)
+    {
         return password_verify($password, $passwordBD);
     }
 
-    private function hashearpassword($password) {
+    private function hashearpassword($password)
+    {
         return password_hash($password, PASSWORD_BCRYPT);
     }
 }
-

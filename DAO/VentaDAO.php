@@ -25,4 +25,15 @@ class VentaDAO
         $sentencia = $this->bd->prepare("INSERT INTO producto_venta(VentaidVenta, ProductoidProducto, precioIndividual, cantidad, total) VALUES(?, ?, ?, ?, ?)");
         return $sentencia->execute([$idVenta, $idProducto, $precioIndividual, $cantidad, $total]);
     }
+
+    public function obtenerVentasEstado($estado) {
+        $sentencia = $this->bd->prepare("SELECT * FROM venta WHERE estado = ?");
+        $sentencia->execute([$estado]);
+        return $sentencia->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    public function cambiarEstadoVenta($idVenta, $estado) {
+        $sentencia = $this->bd->prepare("UPDATE venta SET estado = ? WHERE idVenta = ?");
+        return $sentencia->execute([$estado, $idVenta]);
+    }
 }

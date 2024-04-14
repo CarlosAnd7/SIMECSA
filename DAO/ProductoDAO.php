@@ -1,12 +1,14 @@
 <?php
+require './CarritoUsuariosDAO.php';
 class ProductoDAO
 {
     private $bd;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->bd = ConexionBD::obtenerInstancia()->obtenerConexion();
     }
-    
+
     function obtenerProductosVenta($id)
     {
         $sentencia = $this->bd->prepare("SELECT * 
@@ -17,6 +19,18 @@ class ProductoDAO
         $sentencia->execute([$id]);
         return $sentencia->fetchAll();
     }
+
+    function idDisponible($idConsulta)
+    {
+        $sentencia = $this->bd->prepare("SELECT idProducto FROM producto WHERE idProducto = ? LIMIT 1;");
+        $sentencia->execute([$idConsulta]);
+        if ($sentencia->fetchObject() === false) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     function actualizarProducto($nombre, $precio, $descripcion, $id)
     {
@@ -66,5 +80,45 @@ class ProductoDAO
     {
         $sentencia = $this->bd->prepare("INSERT INTO producto(nombre, precio, descripcion) VALUES(?, ?, ?)");
         return $sentencia->execute([$nombre, $precio, $descripcion]);
+    }
+
+
+
+    function obtenerProductosEnCarrito()
+    {
+        $sentencia = $this->bd->prepare("SELECT producto.idProducto, producto.nombre, producto.descripcion, producto.precio
+     FROM producto
+     INNER JOIN carrito_usuarios
+     ON producto.idProducto = carrito_usuarios.idProducto
+     WHERE carrito_usuarios.id_sesion = ?");
+        $idSesion = session_id();
+        $sentencia->execute([$idSesion]);
+        return $sentencia->fetchAll();
+    }
+
+    function obtenerProductos()
+    {
+        $sentencia = $this->bd->query("SELECT idProducto, nombre, descripcion, precio FROM producto");
+        return $sentencia->fetchAll();
+    }
+
+    function obtenerProductoIndividual($idProducto)
+    {
+        $sentencia = $this->bd->query("SELECT * FROM producto WHERE idProducto = '$idProducto' LIMIT 1;");
+        return $sentencia->fetchAll();
+    }
+
+
+
+    function restockProducto($idProducto, $stock)
+    {
+        $sentencia = $this->bd->prepare("UPDATE producto SET stock = ? WHERE idProducto = ?");
+        return $sentencia->execute([$stock, $idProducto]);
+    }
+
+    function dispoProducto($idProducto, $disponibilidad)
+    {
+        $sentencia = $this->bd->prepare("UPDATE producto SET disponibilidad = ? WHERE idProducto = ?");
+        return $sentencia->execute([$disponibilidad, $idProducto]);
     }
 }

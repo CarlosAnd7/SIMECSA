@@ -19,6 +19,8 @@ class CarritoUsuariosDAO {
         return $sentencia->execute([$idSesion, $idProducto]);
     }
 
+    
+
     public function productoYaEstaEnCarrito($idProducto) {
         $ids = $this->obtenerIdsDeProductosEnCarrito();
         foreach ($ids as $id) {
@@ -38,5 +40,5 @@ class CarritoUsuariosDAO {
         $idSesion = session_id();
         $sentencia = $this->bd->prepare("INSERT INTO carrito_usuarios(idSesion, idProducto) VALUES (?, ?)");
         return $sentencia->execute([$idSesion, $idProducto]);
-    }
+    }    
 }
