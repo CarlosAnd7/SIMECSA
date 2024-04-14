@@ -2,19 +2,33 @@
 function obtenerDatosCliente()
 {
     $bd = obtenerConexion();
-    $sentencia = $bd->prepare("SELECT *
-     FROM usuario
-     WHERE correo = ?");
+    $sentencia = $bd->prepare("SELECT * FROM usuario WHERE correo = ?");
     $sentencia->execute([$_SESSION["correo"]]);
     return $sentencia->fetchAll();
 }
 
+function obtenerDireccionEspecifica($cp, $numeroExt, $numeroInt)
+{
+    $bd = obtenerConexion();
+    $sql = "SELECT * FROM direcciones WHERE Usuariocorreo = ? AND cp = ? AND numeroExt = ?";
+    
+    if ($numeroInt !== null) {
+        $sql .= " AND numeroInt = ?";
+        $params = [$_SESSION["correo"], $cp, $numeroExt, $numeroInt];
+    } else {
+        $params = [$_SESSION["correo"], $cp, $numeroExt];
+    }
+
+    $sentencia = $bd->prepare($sql);
+    $sentencia->execute($params);
+    return $sentencia->fetch(PDO::FETCH_ASSOC);
+}
 
 function actualizarDatosCliente($nombre, $apellidoP, $apellidoM, $telefono)
 {
     $bd = obtenerConexion();
-    $sentencia = $bd->prepare("UPDATE usuario SET nombre = ?, apellidoP = ?, apellidoM = ?, telefono = ? WHERE correo = ?");
-    return $sentencia->execute([$nombre, $apellidoP, $apellidoM, $telefono, $_SESSION["correo"]]);
+    $sentencia = $bd->prepare("UPDATE usuario SET nombre = ?, apellidoP = ?, apellidoM = ? WHERE correo = ?");
+    return $sentencia->execute([$nombre, $apellidoP, $apellidoM, $_SESSION["correo"]]);
 }
 
 function obtenerDirecciones()
@@ -34,18 +48,18 @@ function agregarDireccion($calle, $ne, $ni, $cp, $colonia, $ciudad)
     return $sentencia->execute([$_SESSION["correo"], $ne, $ni, $calle, $cp, $colonia, $ciudad]);
 }
 
-function eliminarDireccion($ne,$cp,$colonia)
+function eliminarDireccion($ne, $cp, $colonia)
 {
     $bd = obtenerConexion();
     $sentencia = $bd->prepare("DELETE FROM direcciones WHERE Usuariocorreo = ? AND numeroExt = ? AND cp = ? AND colonia = ?");
-    return $sentencia->execute([$_SESSION["correo"],$ne,$cp,$colonia]);
+    return $sentencia->execute([$_SESSION["correo"], $ne, $cp, $colonia]);
 }
 
-function insertarVenta($idVenta, $total, $fecha, $usuarioCorreo)
+function insertarVenta($idVenta, $total, $fecha, $usuarioCorreo, $direccion, $pago)
 {
     $bd = obtenerConexion();
-    $sentencia = $bd->prepare("INSERT INTO venta(idVenta, total, fecha, usuarioCorreo, estado) VALUES(?, ?, ?, ?, ?)");
-    return $sentencia->execute([$idVenta, $total, $fecha, $usuarioCorreo, "Por confirmar"]);
+    $sentencia = $bd->prepare("INSERT INTO venta(idVenta, total, fecha, usuarioCorreo, estado, direccion, pago) VALUES(?, ?, ?, ?, ?, ?, ?)");
+    return $sentencia->execute([$idVenta, $total, $fecha, $usuarioCorreo, "Por confirmar", $direccion, $pago]);
 }
 
 function obtenerCategoriasDisponibles()
@@ -81,6 +95,14 @@ function insertarVentaIndividuales($idVenta, $idProducto, $precioIndividual, $ca
     $bd = obtenerConexion();
     $sentencia = $bd->prepare("INSERT INTO producto_venta(VentaidVenta, ProductoidProducto, precioIndividual, cantidad, total) VALUES(?, ?, ?, ?, ?)");
     return $sentencia->execute([$idVenta, $idProducto, $precioIndividual, $cantidad, $total]);
+}
+
+function actualizarStock($idProducto, $cantidad, $cantidadActual)
+{
+    $bd = obtenerConexion();
+    $cantidadAbs = $cantidadActual - $cantidad;
+    $sentencia = $bd->prepare("UPDATE producto SET stock = ? WHERE idProducto = ?");
+    return $sentencia->execute([$cantidadAbs, $idProducto]);
 }
 
 function obtenerProductosEnCarrito()
@@ -168,14 +190,14 @@ function paginarLimit($limit, $offset, $categoria, $busqueda)
 {
     $bd = obtenerConexion();
     if ($categoria == "undefined" || $categoria == "") {
-        $sentencia = $bd->prepare("SELECT * FROM producto LIMIT ? OFFSET ?");
+        $sentencia = $bd->prepare("SELECT * FROM producto WHERE disponibilidad = 1 AND stock != 0 LIMIT ? OFFSET ?");
         $sentencia->execute([$limit, $offset]);
     } else {
-        $sentencia = $bd->prepare("SELECT * FROM producto WHERE Categorianombre = ? LIMIT ? OFFSET ?");
+        $sentencia = $bd->prepare("SELECT * FROM producto WHERE disponibilidad = 1 AND stock != 0 AND  Categorianombre = ? LIMIT ? OFFSET ?");
         $sentencia->execute([$categoria, $limit, $offset]);
     }
     if ($busqueda != "") {
-        $sentencia = $bd->prepare("SELECT * FROM producto WHERE nombre LIKE '%$busqueda%' LIMIT ? OFFSET ?");
+        $sentencia = $bd->prepare("SELECT * FROM producto WHERE disponibilidad = 1 AND stock != 0 AND nombre LIKE '%$busqueda%' LIMIT ? OFFSET ?");
         $sentencia->execute([$limit, $offset]);
     }
     return $sentencia->fetchAll(PDO::FETCH_OBJ);
@@ -200,6 +222,12 @@ function guardarProducto($nombre, $precio, $descripcion)
     $bd = obtenerConexion();
     $sentencia = $bd->prepare("INSERT INTO producto(nombre, precio, descripcion) VALUES(?, ?, ?)");
     return $sentencia->execute([$nombre, $precio, $descripcion]);
+}
+
+function obtenerInfoEmpresa(){
+    $bd = obtenerConexion();
+    $sentencia = $bd->query("SELECT * FROM datoscontacto");
+    return $sentencia->fetchObject();
 }
 
 function login($correo, $password)
@@ -231,6 +259,14 @@ function usuarioExiste($correo)
     $bd = obtenerConexion();
     $sentencia = $bd->prepare("SELECT correo FROM usuario WHERE correo = ? LIMIT 1;");
     $sentencia->execute([$correo]);
+    return $sentencia->rowCount() > 0;
+}
+
+function usuarioExisteTel($telefono)
+{
+    $bd = obtenerConexion();
+    $sentencia = $bd->prepare("SELECT telefono FROM usuario WHERE telefono = '$telefono' LIMIT 1;");
+    $sentencia->execute();
     return $sentencia->rowCount() > 0;
 }
 
@@ -270,10 +306,12 @@ function coincidenPalabrasSecretas($password, $passwordBD)
 {
     return password_verify($password, $passwordBD);
 }
+
 function hashearpassword($password)
 {
-    return password_hash($password, PASSWORD_BCRYPT);
+    return password_hash($password, PASSWORD_ARGON2I);
 }
+
 
 function actualizarPassword($passActual, $passNueva)
 {

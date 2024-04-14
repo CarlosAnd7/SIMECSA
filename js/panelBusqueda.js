@@ -42,6 +42,11 @@ const obtenerProductos = async () => {
 
     const cardItem = document.createElement("div");
     cardItem.classList.add("card", "h-100", "shadow-sm");
+    cardItem.id = producto.idProducto
+    cardItem.setAttribute(
+      "onClick",
+      "verProducto('" + cardItem.id + "')"
+    );
 
     const imgItem = document.createElement("img");
     imgItem.classList.add("card-img-top");
@@ -214,3 +219,7 @@ const obtenerProductos = async () => {
 };
 // Y cuando se incluya este script, invocamos a la función
 obtenerProductos();
+
+function verProducto(id){
+  location.href = "./verProducto.php?id=" + id;
+}

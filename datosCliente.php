@@ -6,14 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIMECSA</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel="stylesheet" href="./css/navbar.css">
-    <link rel="stylesheet" href="./css/main.css">
-    <link rel="stylesheet" href="./css/cards.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <?php
+    include("./navbar.php");
+    ?>
+
+    <link rel="stylesheet" href="./css/datosCliente.css">
 </head>
-<?php
-include("./navbar.php");
-?>
+
 <script src="./js/enviarForm.js"></script>
 
 <body>
@@ -79,7 +79,7 @@ include("./navbar.php");
                 <div class="field">
                     <label class="label">Número Exterior</label>
                     <div class="control">
-                        <input class="input" type="text"  name="ne" id="ne" placeholder="#" required>
+                        <input class="input" type="text" name="ne" id="ne" placeholder="#" required>
                     </div>
                 </div>
 
@@ -93,20 +93,20 @@ include("./navbar.php");
                 <div class="field">
                     <label class="label">Código Postal</label>
                     <div class="control">
-                        <input class="input" type="text"  name="cp" id="cp" placeholder="" maxlength="5" required>
+                        <input class="input" type="text" name="cp" id="cp" placeholder="" maxlength="5" required>
                     </div>
                 </div>
 
                 <div class="field">
                     <label class="label">Colonia</label>
                     <div class="control">
-                        <input class="input" type="text"  name="colonia" id="colonia" placeholder="" required>
+                        <input class="input" type="text" name="colonia" id="colonia" placeholder="" required>
                     </div>
                 </div>
                 <div class="field">
                     <label class="label">Ciudad</label>
                     <div class="control">
-                        <input class="input" type="text"  name="ciudad" id="ciudad" placeholder="" required>
+                        <input class="input" type="text" name="ciudad" id="ciudad" placeholder="" required>
                     </div>
                 </div>
                 <footer class="modal-card-foot">
@@ -147,7 +147,7 @@ include("./navbar.php");
                     </div>
                 </div>
 
-                
+
                 <footer class="modal-card-foot">
                     <button class="button is-success" id="btnGuardarPass">Guardar</button>
                     <button class="button is-danger">Cancelar</button>
@@ -163,6 +163,7 @@ include("./navbar.php");
 </html>
 <script src="./js/formDatosCliente.js"></script>
 <script src="./js/formularioDireccion.js"></script>
+<script src="./js/formPass.js"></script>
 <script>
     $(".modal-button").click(function() {
         var target = $(this).data("target");

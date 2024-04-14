@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <title>Registrate</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"
+      integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <link rel="stylesheet" href="./css/loginStyle.css" />
+    <link rel="stylesheet" href="./css/registro.css">
+    <script src="./js/formRegistro.js"></script>
+  </head>
+
+  <body onload="cargaLimpia()">
+    <section class="ftco-section">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-12 col-lg-10">
+            <h3 class="mb-4">Llena con tus datos para completar tu registro</h3>
+            <form action="./registrar.php" method="post" class="signin-form">
+              <div class="form-group mb-3">
+                <label class="label" for="correo">Correo</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  name="correo"
+                  id="correo"
+                  placeholder="usuario@ejemplo.com"
+                  pattern="[a-zA-Z0-9!#$%&'*\/=?^_`\{\|\}~\+\-]([\.]?[a-zA-Z0-9!#$%&'*\/=?^_`\{\|\}~\+\-])+@[a-zA-Z0-9]([^@&%$\/\(\)=?¿!\.,:;]|\d)+[a-zA-Z0-9][\.][a-zA-Z]{2,4}([\.][a-zA-Z]{2})?"
+                  required
+                />
+              </div>
+
+              <div class="form-group mb-3">
+                <div>
+                  <label class="label" for="name">Tipo de Cuenta A Crear</label>
+                  <div class="form-check form-check-inline">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="radioTipoCuenta"
+                      id="per"
+                      value="Personal"
+                      onclick="alertaSeleccionado()"
+                    />
+                    <label class="form-check-label" for="per">Personal</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="radioTipoCuenta"
+                      id="emp"
+                      value="Empresarial"
+                      onclick="alertaSeleccionado()"
+                    />
+                    <label class="form-check-label" for="emp"
+                      >Empresarial</label
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div id="espacio"></div>
+
+              <br />
+
+              <div class="form-group mb-3">
+                <label class="label" for="telefono">Teléfono</label>
+                <input
+                  type="tel"
+                  class="form-control"
+                  name="telefono"
+                  id="telefono"
+                  required
+                  pattern="[0-9]{10}"
+                  title="El formato debe ser de 10 digitos"
+                />
+              </div>
+
+              <div class="form-group mb-3">
+                <label class="label" for="pass">Contraseña</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  name="pass"
+                  id="pass"
+                  placeholder="Escribe aquí tu contraseña"
+                  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
+                  title="La contraseña debe tener al menos 8 caracteres que incluyan una mayúscula, una minúscula y un número"
+                  required
+                />
+                
+              </div>
+
+              <div class="form-group mb-3">
+                <label class="label" for="pass_confirmar"
+                  >Repite tu Contraseña</label
+                >
+                <input
+                  oninput="validarPass()"
+                  type="password"
+                  class="form-control"
+                  name="pass_confirmar"
+                  id="pass_confirmar"
+                  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                  placeholder="Repite aquí tu contraseña"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <button
+                  type="submit"
+                  id="submitButton"
+                  class="form-control btn btn-secondary submit px-3"
+                >
+                  Continuar
+                </button>
+              </div>
+              <div class="form-group d-md-flex">
+                <div class="text-md-right">
+                  <p>
+                    <a
+                      href="./login.html"
+                      class="btn btn-white btn-outline-white"
+                      >¿Ya tienes una cuenta? Inicia Sesión</a
+                    >
+                  </p>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

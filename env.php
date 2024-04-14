@@ -1,4 +1,4 @@
 ; <?php exit; ?>
-MYSQL_DATABASE_NAME = "simecsadb"
-MYSQL_USER = "root"
-MYSQL_PASSWORD = ""
+MYSQL_DATABASE_NAME = "u837024564_simecsadb"
+MYSQL_USER = "u837024564_simecsadb"
+MYSQL_PASSWORD = "ferreteriasSimecsa0611"

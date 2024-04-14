@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+    
 <link rel="stylesheet" href="./css/footer.css">
 <?php
 include("./navbar.php");
@@ -40,9 +41,16 @@ include("./navbar.php");
 </html>
 
 <script>
-    function buscar() {
-        window.location.href = "./paginaBusqueda.php?busqueda=" + document.querySelector("#campoBusqueda").value
+    function buscar(){
+        window.location.href = "./paginaBusqueda.php?busqueda="+document.querySelector("#campoBusqueda").value
     }
+    $('#campoBusqueda').keypress(function(e) {
+        var keycode = (e.keyCode ? e.keyCode : e.which);
+        if (keycode == '13') {
+            buscar();
+            return false;
+        }
+    });
 </script>
 
 <script src="./js/panelMod.js"></script>
