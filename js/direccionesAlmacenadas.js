@@ -8,7 +8,8 @@ const llenaCampos = async () => {
     i++;
     var cardComponent = document.createElement("div");
     cardComponent.classList.add("card");
-    cardComponent.id = "NE" + direccion.numeroExt + "NI" + direccion.numeroInt + "CP" + direccion.cp;
+    cardComponent.id = "Dir" + (i+1)
+    cardComponent.value = direccion.numeroExt + "/" + direccion.numeroInt + "/" + direccion.cp;
     var cardBody = document.createElement("div");
     cardBody.classList.add("card-body");
 
@@ -70,21 +71,25 @@ const llenaCampos = async () => {
 llenaCampos();
 
 function setDireccion(id) {
+  if(id != "sucursal"){
+    setMetodoPago("transferencia")
+  }
   const direccion = document.querySelector("#direccion");
   var cards = document.querySelectorAll("div.card.border-primary");
   cards.forEach((card) => {
     card.classList = "";
     card.classList.add("card");
   });
-  direccion.value = id;
+  
   var cardSelected = document.querySelector("#" + id);
   cardSelected.classList = "";
   cardSelected.classList.add("card", "border-primary", "mb-3");
+  direccion.value = cardSelected.value;
   checkFields()
 }
 
 function setMetodoPago(id) {
-  if(document.querySelector("#direccion").value != "sucursal"){
+  if(document.querySelector("#direccion").value != "undefined"){
     id = "transferencia"
   }
   var pago = document.querySelector("#pago");

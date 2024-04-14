@@ -1,23 +1,5 @@
 <?php
 
-function paginarLimit($limit, $offset, $categoria, $busqueda) {
-    $conexion = ConexionBD::obtenerInstancia()->obtenerConexion();
-    $sentencia = null;
-    if ($categoria == "undefined" || $categoria == "") {
-        $sentencia = $conexion->prepare("SELECT * FROM producto LIMIT ? OFFSET ?");
-        $sentencia->execute([$limit, $offset]);
-    } else {
-        $sentencia = $conexion->prepare("SELECT * FROM producto WHERE Categorianombre = ? LIMIT ? OFFSET ?");
-        $sentencia->execute([$categoria, $limit, $offset]);
-    }
-    if ($busqueda != "") {
-        $sentencia = $conexion->prepare("SELECT * FROM producto WHERE nombre LIKE ? LIMIT ? OFFSET ?");
-        $sentencia->execute(["%$busqueda%", $limit, $offset]);
-    }
-    return $sentencia->fetchAll(PDO::FETCH_OBJ);
-}
-
-
 function obtenerVariableDelEntorno($key)
 {
     if (defined("_ENV_CACHE")) {

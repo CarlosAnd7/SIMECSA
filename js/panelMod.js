@@ -41,6 +41,8 @@ const obtenerProductos = async () => {
 
     const cardItem = document.createElement("div");
     cardItem.classList.add("card", "h-100", "shadow-sm");
+    cardItem.id = producto.idProducto;
+    cardItem.setAttribute("onClick", "verProducto('" + cardItem.id + "')");
 
     const imgItem = document.createElement("img");
     imgItem.classList.add("card-img-top");
@@ -129,11 +131,13 @@ const obtenerProductos = async () => {
         button3.classList.add("text-center", "my-2");
 
         const eliminar = document.createElement("a");
-        eliminar.href = "./eliminarCarrito.php?id=" + idProducto+
-        "&pagina=" +
-        paginaActual +
-        "&categoria=" +
-        categoria;
+        eliminar.href =
+          "./eliminarCarrito.php?id=" +
+          idProducto +
+          "&pagina=" +
+          paginaActual +
+          "&categoria=" +
+          categoria;
         eliminar.classList.add("btn", "btn-danger");
         eliminar.innerText = "Quitar";
         const iE = document.createElement("i");
@@ -168,8 +172,7 @@ const obtenerProductos = async () => {
       " de " +
       totalProductos +
       " productos disponibles";
-  }
-  else{
+  } else {
     p1.innerHTML =
       "Mostrando " +
       totalProductos +
@@ -193,21 +196,62 @@ const obtenerProductos = async () => {
   var ul = document.createElement("ul");
   ul.classList.add("pagination", "pagination-lg", "justify-content-center");
 
-  for (var i = 0; i < paginas; i++) {
+  var paginasTotales = paginas; // Este valor debe ser el total real de páginas
+  var paginasPorBloque = 5; // Define cuántas páginas quieres mostrar a la vez
+  var paginaActual = parseInt(urlSearchParams.get("pagina")) || 1; // Página actual obtenida de los parámetros de la URL
+
+  // Calcula el rango de páginas a mostrar
+  var inicioBloque =
+    Math.floor((paginaActual - 1) / paginasPorBloque) * paginasPorBloque + 1;
+  var finBloque = Math.min(inicioBloque + paginasPorBloque - 1, paginasTotales);
+
+  for (var i = inicioBloque; i <= finBloque; i++) {
     var li = document.createElement("li");
     li.classList.add("page-item");
+
     var a = document.createElement("a");
-    a.id = "pageBTN" + (i + 1);
+    a.id = "pageBTN" + i;
     a.classList.add("page-link");
-    a.innerText = i + 1;
-    if (urlSearchParams.get("pagina") == i + 1) {
+    a.innerText = i;
+
+    if (i === paginaActual) {
       a.classList.add("active");
     }
-    a.href = "./index.php?pagina=" + (i + 1) + "&categoria=" + categoria;
+
+    a.href = "./index.php?pagina=" + i + "&categoria=" + categoria;
     li.appendChild(a);
     ul.appendChild(li);
   }
 
+  // Agrega el botón "Anterior"
+  var anteriorLi = document.createElement("li");
+  anteriorLi.classList.add("page-item");
+  var anteriorA = document.createElement("a");
+  anteriorA.classList.add("page-link");
+  anteriorA.innerHTML = "&lt;";
+  if (paginaActual > 1) {
+    anteriorA.href =
+      "./index.php?pagina=" + (paginaActual - 1) + "&categoria=" + categoria;
+  } else {
+    anteriorA.classList.add("disabled");
+  }
+  anteriorLi.appendChild(anteriorA);
+  ul.insertBefore(anteriorLi, ul.firstChild);
+
+  // Agrega el botón "Siguiente"
+  var siguienteLi = document.createElement("li");
+  siguienteLi.classList.add("page-item");
+  var siguienteA = document.createElement("a");
+  siguienteA.classList.add("page-link");
+  siguienteA.innerHTML = "&gt;";
+  if (paginaActual < paginasTotales) {
+    siguienteA.href =
+      "./index.php?pagina=" + (paginaActual + 1) + "&categoria=" + categoria;
+  } else {
+    siguienteA.classList.add("disabled");
+  }
+  siguienteLi.appendChild(siguienteA);
+  ul.appendChild(siguienteLi);
   nav.appendChild(ul);
   paginacionProductos.appendChild(nav);
 };
@@ -266,6 +310,12 @@ const creaRadio = async () => {
     case "Herramienta":
       document.querySelector("#Herramienta").checked = true;
       break;
+    case "Electricidad":
+      document.querySelector("#Electricidad").checked = true;
+      break;
+    case "Fontanería":
+      document.querySelector("#Fontanería").checked = true;
+      break;
     case "Herramienta Manual":
       document.querySelector("#HerramientaManual").checked = true;
       break;
@@ -281,3 +331,7 @@ const creaRadio = async () => {
 };
 
 creaRadio();
+
+function verProducto(id) {
+  location.href = "./verProducto.php?id=" + id;
+}

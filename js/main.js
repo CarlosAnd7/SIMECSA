@@ -65,6 +65,14 @@ const listProducts = async () => {
       $celdaEstado.innerText = pedido.estado;
       $fila.appendChild($celdaEstado);
 
+      const $celdaDireccion = document.createElement("td");
+      $celdaDireccion.innerText = pedido.direccion;
+      $fila.appendChild($celdaDireccion);
+
+      const $celdaPago = document.createElement("td");
+      $celdaPago.innerText = pedido.pago;
+      $fila.appendChild($celdaPago);
+
       // Extraer el id del pedido en el que estamos dentro del ciclo
       const idVenta = pedido.idVenta;
       // Link para eliminar

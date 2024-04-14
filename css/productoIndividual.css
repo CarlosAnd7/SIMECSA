@@ -1,0 +1,21 @@
+.carousel-item{
+    max-width: 500px;
+}
+@media (min-width: 1025px) {
+    .row{
+        margin: 7%;
+    }
+}
+
+@media (max-width: 1025px) {
+    .row{
+        margin-top: 20%;
+    }
+}
+
+@media (max-width: 300px) {
+    .row{
+        margin: 10%;
+    }
+}
+

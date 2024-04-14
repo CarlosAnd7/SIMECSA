@@ -30,5 +30,12 @@ $busqueda = $_GET["busqueda"];
     function buscar(){
         window.location.href = "./paginaBusqueda.php?busqueda="+document.querySelector("#campoBusqueda").value
     }
+    $('#campoBusqueda').keypress(function(e) {
+        var keycode = (e.keyCode ? e.keyCode : e.which);
+        if (keycode == '13') {
+            buscar();
+            return false;
+        }
+    });
 </script>
 <script src="./js/panelBusqueda.js"></script>

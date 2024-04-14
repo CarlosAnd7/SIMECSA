@@ -1,0 +1,98 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+    color: #333;
+  }
+  
+  .container-fluid {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .container-fluid.bg-trasparent {
+    background-color: transparent;
+    padding: 10px;
+  }
+  
+  .input-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-control {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .btn {
+    border-radius: 5px;
+  }
+  
+  .form-check {
+    margin-right: 10px;
+  }
+  
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -10px;
+  }
+  
+  .row > div {
+    flex: 0 0 calc(100% - 20px);
+    margin: 10px;
+  }
+  
+  /* Media queries para hacerlo responsivo */
+  @media (max-width: 768px) {
+    .container-fluid {
+      padding: 10px;
+    }
+  
+    .input-group {
+      margin-bottom: 10px;
+    }
+  
+    .form-check {
+      margin-right: 0;
+      margin-bottom: 10px;
+    }
+  
+    .row > div {
+      flex: 0 0 calc(50% - 20px);
+    }
+  }
+  
+  /* Estilo para los íconos */
+  .bi-search,
+  .fa-search {
+    font-size: 16px;
+  }
+  
+  /* Estilo para el botón de búsqueda */
+  .btn-primary {
+    background-color: #007bff;
+    border: 1px solid #007bff;
+    color: #fff;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+    border: 1px solid #0056b3;
+  }
+  
+  .btn-primary:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+  }
+  
+  /* Estilo para el botón de radio */
+  .form-check-input[type="radio"]:checked + .form-check-label::before {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+  
+  /* Estilo para el footer (incluye tu estilo personalizado) */
+  /* Agrega aquí tus estilos personalizados para el footer si es necesario */
+  
