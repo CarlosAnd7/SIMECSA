@@ -1,89 +1,5 @@
 <?php
 
-
-
-
-function obtenerProductosEnCarrito()
-{
-    $bd = obtenerConexion();
-    $sentencia = $bd->prepare("SELECT *
-     FROM producto
-     INNER JOIN carrito_usuarios
-     ON producto.idProducto = carrito_usuarios.idProducto
-     WHERE carrito_usuarios.idSesion = ?");
-    $idSesion = session_id();
-    $sentencia->execute([$idSesion]);
-    return $sentencia->fetchAll();
-}
-function quitarProductoDelCarrito($idProducto)
-{
-    $bd = obtenerConexion();
-    $idSesion = session_id();
-    $sentencia = $bd->prepare("DELETE FROM carrito_usuarios WHERE idSesion = ? AND idProducto = ?");
-    return $sentencia->execute([$idSesion, $idProducto]);
-}
-
-function productoYaEstaEnCarrito($idProducto)
-{
-    $ids = obtenerIdsDeProductosEnCarrito();
-    foreach ($ids as $id) {
-        if ($id == $idProducto) return true;
-    }
-    return false;
-}
-
-function obtenerIdsDeProductosEnCarrito()
-{
-    $bd = obtenerConexion();
-    $sentencia = $bd->prepare("SELECT idProducto FROM carrito_usuarios WHERE idSesion = ?");
-    $idSesion = session_id();
-    $sentencia->execute([$idSesion]);
-    return $sentencia->fetchAll(PDO::FETCH_COLUMN);
-}
-
-function agregarProductoAlCarrito($idProducto)
-{
-    // Ligar el id del producto con el usuario a través de la sesión
-    $bd = obtenerConexion();
-    $idSesion = session_id();
-    $sentencia = $bd->prepare("INSERT INTO carrito_usuarios(idSesion, idProducto) VALUES (?, ?)");
-    return $sentencia->execute([$idSesion, $idProducto]);
-}
-function actualizarProducto($nombre, $precio, $descripcion, $id)
-{
-    $bd = obtenerConexion();
-    $sentencia = $bd->prepare("UPDATE producto SET nombre = ?, precio = ?, descripcion = ? WHERE idProducto = ?");
-    return $sentencia->execute([$nombre, $precio, $descripcion, $id]);
-}
-
-function obtenerProductoPorId($id)
-{
-    $bd = obtenerConexion();
-    $sentencia = $bd->prepare("SELECT * FROM producto WHERE idProducto = ?");
-    $sentencia->execute([$id]);
-    $conteo = $sentencia->fetchObject();
-    return $conteo;
-}
-
-function contarProductos($categoria)
-{
-    $bd = obtenerConexion();
-    if ($categoria == "undefined" || $categoria == "") {
-        $sentencia = $bd->query("SELECT count(*) AS conteo FROM producto");
-    } else {
-        $sentencia = $bd->query("SELECT count(*) AS conteo FROM producto WHERE Categorianombre = '$categoria'");
-    }
-
-    return $sentencia->fetchObject()->conteo;
-}
-
-function contarProductosBusqueda($busqueda)
-{
-    $bd = obtenerConexion();
-    $sentencia = $bd->query("SELECT count(*) AS conteo FROM producto WHERE nombre LIKE '%$busqueda%'");
-    return $sentencia->fetchObject()->conteo;
-}
-
 function paginarLimit($limit, $offset, $categoria, $busqueda)
 {
     $bd = obtenerConexion();
@@ -99,27 +15,6 @@ function paginarLimit($limit, $offset, $categoria, $busqueda)
         $sentencia->execute([$limit, $offset]);
     }
     return $sentencia->fetchAll(PDO::FETCH_OBJ);
-}
-
-function obtenerProducto()
-{
-    $bd = obtenerConexion();
-    $sentencia = $bd->query("SELECT * FROM producto");
-    return $sentencia->fetchAll();
-}
-
-function eliminarProducto($id)
-{
-    $bd = obtenerConexion();
-    $sentencia = $bd->prepare("DELETE FROM producto WHERE idProducto = ?");
-    return $sentencia->execute([$id]);
-}
-
-function guardarProducto($nombre, $precio, $descripcion)
-{
-    $bd = obtenerConexion();
-    $sentencia = $bd->prepare("INSERT INTO producto(nombre, precio, descripcion) VALUES(?, ?, ?)");
-    return $sentencia->execute([$nombre, $precio, $descripcion]);
 }
 
 function login($correo, $password)
