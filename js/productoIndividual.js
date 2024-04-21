@@ -15,8 +15,8 @@ const rellenarFormulario = async () => {
   var agregar = document.createElement("a");
   const i = document.createElement("i");
 
-  var peC = await fetch(`comprobarCarrito.php?id=${idProductoSearch}`);
-  var sN = await peC.json();
+  //var peC = await fetch(`comprobarCarrito.php?id=${idProductoSearch}`);
+  //var sN = await peC.json();
 
   const checkSession = await fetch(`comprobarSesion.php`);
   const rq = await checkSession.json();

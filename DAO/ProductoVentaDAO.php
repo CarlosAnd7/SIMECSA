@@ -1,4 +1,6 @@
 <?php
+require './conf/ConexionBD.php';
+
 class ProductoVentaDAO {
     private $bd;
 

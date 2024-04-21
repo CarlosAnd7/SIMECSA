@@ -4,12 +4,10 @@
 class ConexionBD extends PDO {
     private static $instancia;
 
-    private function __construct() {
-        $password = obtenerVariableDelEntorno("MYSQL_PASSWORD");
-        $user = obtenerVariableDelEntorno("MYSQL_USER");
-        $dbName = obtenerVariableDelEntorno("MYSQL_DATABASE_NAME");
-        $dsn = 'mysql:host=localhost;dbname=' . $dbName;
-        parent::__construct($dsn, $user, $password);
+    public function __construct() {
+        $config = include('env.php');
+        $dsn = 'mysql:host=localhost;dbname=' . $config['dbname'];
+        parent::__construct($dsn, $config['user'], $config['password']);
         $this->setAttribute(PDO::ATTR_EMULATE_PREPARES, FALSE);
         $this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $this->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);

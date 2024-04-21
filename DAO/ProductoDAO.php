@@ -1,5 +1,6 @@
 <?php
-require './CarritoUsuariosDAO.php';
+require 'CarritoUsuariosDAO.php';
+require './conf/ConexionBD.php';
 class ProductoDAO
 {
     private $bd;
