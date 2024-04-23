@@ -1,7 +1,8 @@
 <?php
 require './conf/ConexionBD.php';
 
-class ClienteDAO {
+class ClienteDAO extends UsuarioDAO
+{
     private $bd;
 
     public function __construct() {
