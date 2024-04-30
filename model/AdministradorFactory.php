@@ -1,5 +1,5 @@
 <?php
-class AdministradorFactory extends UsuarioFactory {
+class AdministradorFactory extends AbstractUsuarioFactory {
     public function crearUsuario($datos) {
         return new Administrador(
             $datos['idAdmin'],

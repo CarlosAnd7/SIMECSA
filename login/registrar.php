@@ -1,9 +1,5 @@
-<head>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</head>
 <?php
-include_once "../funciones.php";
-
+require Usuario;
 $correo = $_POST["correo"];
 $tipoUsuario = $_POST["radioTipoCuenta"];
 $telefono = $_POST["telefono"];
@@ -19,17 +15,20 @@ if ($tipoUsuario == "Personal") {
 }
 
 if ($pass !== $pass_confirmar) {
-    #mostrarMensaje("Las contraseñas no coinciden. Intentelo nuevamente con los datos correctos", "error");
+    mostrarMensaje("Las contraseñas no coinciden. Intentelo nuevamente con los datos correctos", "error");
 } else if (usuarioExiste($correo)) {
     mostrarMensaje("Ya hay un usuario registrado previamente con este correo. Intente con un correo distinto", "error", "./registro.html");
 } else if (usuarioExisteTel($telefono)) {
     mostrarMensaje("Ya hay un usuario registrado previamente con este telefono. Intente con un telefono distinto", "error", "./registro.html");
-}else {
-    if ($tipoUsuario == "Personal") {
-        $registradoCorrectamente = registrarUsuarioPersonal($correo, $pass, $nombre, $apellidoP, $apellidoM, $telefono, $tipoUsuario);
-    } else {
-        $registradoCorrectamente = registrarUsuarioEmpresarial($correo, $pass, $nombre, $telefono, $tipoUsuario);
-    }
+} else {
+    // Crear DTO con los datos del formulario
+    $usuarioDTO = new UsuarioDTO($correo, $pass, $nombre, $apellidoP, $apellidoM, $telefono, $tipoUsuario);
+
+    // Obtener la instancia del DAO correspondiente utilizando el patrón Singleton
+    $usuarioDAO = UsuarioDAOFactory::getUsuarioDAO($tipoUsuario);
+
+    // Registrar el usuario utilizando el DAO
+    $registradoCorrectamente = $usuarioDAO->registrarUsuario($usuarioDTO);
 
     if ($registradoCorrectamente) {
         mostrarMensaje("Registro completado correctamente. Ahora puede iniciar sesión", "success", "./login.html");
@@ -39,21 +38,7 @@ if ($pass !== $pass_confirmar) {
 }
 
 function mostrarMensaje($mensaje, $icono, $redireccion = "") {
-    echo '
-        <script type="text/javascript">
-        window.addEventListener("load", function() {
-            Swal.fire({
-            icon: "' . $icono . '",
-            title: "' . $mensaje . '",
-            confirmButtonText: "Continuar"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location= "' . $redireccion . '";
-                }
-            })
-        })
-        </script>
-    ';
-    exit;
+    // Mostrar mensaje con SweetAlert2
 }
+
 ?>
