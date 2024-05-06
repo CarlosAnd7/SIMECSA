@@ -1,36 +1,40 @@
 <?php
 
 class UsuarioDTO implements UsuarioRepository {
+    private $usuarioDAO;
 
-    
+    public function __construct($usuarioDAO)
+    {
+        $this->usuarioDAO = $usuarioDAO;
+    }
 
     public function usuarioExiste($correo)
     {
-        // TODO: Implement usuarioExiste() method.
+        return $this->usuarioDAO->usuarioExiste($correo);
     }
 
     public function obtenerUsuarioPorCorreo($correo)
     {
-        // TODO: Implement obtenerUsuarioPorCorreo() method.
+        return $this->usuarioDAO->obtenerUsuarioPorCorreo($correo);
     }
 
     public function registrarUsuarioPersonal($correo, $password, $nombre, $apellidoP, $apellidoM, $telefono, $tipoUsuario)
     {
-        // TODO: Implement registrarUsuarioPersonal() method.
+        return $this->usuarioDAO->registrarUsuarioPersonal($correo, $password, $nombre, $apellidoP, $apellidoM, $telefono, $tipoUsuario);
     }
 
     public function registrarUsuarioEmpresarial($correo, $password, $nombre, $telefono, $tipoUsuario)
     {
-        // TODO: Implement registrarUsuarioEmpresarial() method.
+        return $this->usuarioDAO->registrarUsuarioEmpresarial($correo, $password, $nombre, $telefono, $tipoUsuario);
     }
 
     public function actualizarPassword($correo, $passActual, $passNueva)
     {
-        // TODO: Implement actualizarPassword() method.
+        return $this->usuarioDAO->actualizarPassword($correo, $passActual, $passNueva);
     }
 
     public function login($correo, $password)
     {
-        // TODO: Implement login() method.
+        return $this->usuarioDAO->login($correo, $password);
     }
 }
