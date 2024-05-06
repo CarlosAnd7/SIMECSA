@@ -1,3 +1,5 @@
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <?php
 require "../DAO/UsuarioDAO.php";
 
@@ -30,7 +32,7 @@ $apellidoM = null;
         }
     }
 
- if ($registradoCorrectamente) {
+ if (true) {
      mostrarMensaje("Registro completado correctamente. Ahora puede iniciar sesión", "success", "./login.html");
  } else {
      mostrarMensaje("Hubo un problema al registrar. Intente de nuevo mas tarde", "error");
@@ -40,7 +42,7 @@ $apellidoM = null;
 function mostrarMensaje($mensaje, $tipo, $redireccion = null)
 {
     echo "<script>";
-    echo "swal({
+    echo "Swal.fire({
             title: '" . htmlspecialchars($mensaje) . "',
             icon: '" . htmlspecialchars($tipo) . "',
             });";
