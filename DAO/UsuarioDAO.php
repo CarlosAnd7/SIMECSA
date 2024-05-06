@@ -1,5 +1,5 @@
 <?php
-require './conf/ConexionBD.php';
+require '../conf/ConexionBD.php';
 
 class UsuarioDAO
 {

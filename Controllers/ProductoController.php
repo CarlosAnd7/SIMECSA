@@ -18,5 +18,15 @@ class ProductoController
         $producto = $productoRepository->obtenerPorId($_GET["id"]);
         echo json_encode($producto);
     }
+
+    public function obtenerProductos()
+    {
+        $productoDAO = new ProductoDAO();
+        $productoRepository = new ProductoDTO($productoDAO);
+
+        $productos = $productoRepository->obtenerProductos();
+        echo json_encode($productos);
+    }
 }
+
 

@@ -1,5 +1,4 @@
 <?php
-
 class UsuarioDTO implements UsuarioRepository {
     private $usuarioDAO;
 
